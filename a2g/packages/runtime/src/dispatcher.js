@@ -1,4 +1,4 @@
-class Dispatcher {
+export class Dispatcher {
   #subs = new Map();
   #afterHandlers = [];
 
@@ -34,7 +34,3 @@ class Dispatcher {
     this.#afterHandlers.forEach((handler) => handler());
   }
 }
-
-module.exports = {
-  Dispatcher,
-};

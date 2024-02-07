@@ -1,8 +1,8 @@
-const { destroyDOM } = require("./destroy-dom");
-const { mountDOM } = require("./mount-dom");
-const { Dispatcher } = require("./dispatcher");
+import { destroyDOM } from "./destroy-dom";
+import { mountDOM } from "./mount-dom";
+import { Dispatcher } from "./dispatcher";
 
-function createApp({ state, view, reducers = {} }) {
+export function createApp({ state, view, reducers = {} }) {
   let parentEl = null;
   let vdom = null;
 
@@ -18,7 +18,6 @@ function createApp({ state, view, reducers = {} }) {
     const reducer = reducers[actionName];
 
     const subs = dispatcher.subscribe(actionName, (payload) => {
-      
       console.log(payload);
       state = reducer(state, payload);
       console.log(state);
@@ -46,7 +45,3 @@ function createApp({ state, view, reducers = {} }) {
     },
   };
 }
-
-module.exports = {
-  createApp,
-};

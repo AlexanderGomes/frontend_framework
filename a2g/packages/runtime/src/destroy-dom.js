@@ -1,7 +1,7 @@
-const { removeEventListeners } = require("./events");
-const { DOM_TYPES } = require("./h");
+import { removeEventListeners } from "./events";
+import { DOM_TYPES } from "./h";
 
-function destroyDOM(vdom) {
+export function destroyDOM(vdom) {
   const { type } = vdom;
   switch (type) {
     case DOM_TYPES.TEXT: {
@@ -42,7 +42,3 @@ function removeFragmentNodes(vdom) {
   const { children } = vdom;
   children.forEach(destroyDOM);
 }
-
-module.exports = {
-  destroyDOM,
-};

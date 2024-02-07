@@ -1,8 +1,8 @@
-const { DOM_TYPES } = require("./h");
-const { setAttributes } = require("./attributes");
-const { addEventListeners } = require("./events");
+import { DOM_TYPES } from "./h";
+import { setAttributes } from "./attributes";
+import { addEventListeners } from "./events";
 
-function mountDOM(vdom, parentEl) {
+export function mountDOM(vdom, parentEl) {
   switch (vdom.type) {
     case DOM_TYPES.TEXT: {
       createTextNode(vdom, parentEl);
@@ -50,6 +50,3 @@ function addProps(el, props, vdom) {
   setAttributes(el, attrs);
 }
 
-module.exports = {
-  mountDOM,
-};

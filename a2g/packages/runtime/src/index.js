@@ -1,9 +1,2 @@
-const app = require("./app");
-const h = require("./h");
-
-module.exports = {
-  createApp: app.createApp,
-  h: h.h,
-  hFragment: h.hFragment,
-  hString: h.hString,
-};
+export { createApp } from './app.js'
+export { DOM_TYPES, h, hFragment, hString } from './h.js'

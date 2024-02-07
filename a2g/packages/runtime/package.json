@@ -1,6 +1,6 @@
 {
   "name": "fang_framework_123",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A frontend framework to teach web developers how frontend frameworks work.",
   "keywords": [
     "frontend",
@@ -10,9 +10,12 @@
     "web",
     "development"
   ],
-  "main": "dist/a2g123831.js",
+  "exports": "./dist/fe-fwk.js",
+  "main": "dist/fe-fwk.js",
+  "module": "dist/fe-fwk.js",
   "files": [
-    "dist/a2g123831.js"
+    "dist/fe-fwk.js",
+    "dist/fe-fwk.min.js"
   ],
   "scripts": {
     "build": "rollup -c",

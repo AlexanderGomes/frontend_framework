@@ -1,4 +1,4 @@
-import {withoutNulls} from './utils/arrays'
+import { withoutNulls } from "./utils/arrays";
 
 export const DOM_TYPES = {
   TEXT: "text",
@@ -35,7 +35,6 @@ export function hFragment(vNodes) {
   };
 }
 
-
 export function lipsum(n) {
   const text = `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -43,5 +42,3 @@ export function lipsum(n) {
     ut aliquip ex ea commodo consequat.`;
   return hFragment(Array(n).fill(h("p", {}, [text])));
 }
-
-

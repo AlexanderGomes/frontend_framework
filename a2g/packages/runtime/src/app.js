@@ -13,14 +13,11 @@ export function createApp({ state, view, reducers = {} }) {
     dispatcher.dispatch(eventName, payload);
   }
 
-  // go deeper to understand later on.
+  // (payload) => { state = reducer(state, payload)}
   for (const actionName in reducers) {
     const reducer = reducers[actionName];
-
     const subs = dispatcher.subscribe(actionName, (payload) => {
-      console.log(payload);
       state = reducer(state, payload);
-      console.log(state);
     });
     subscriptions.push(subs);
   }
@@ -29,7 +26,9 @@ export function createApp({ state, view, reducers = {} }) {
     if (vdom) {
       destroyDOM(vdom);
     }
+
     vdom = view(state, emit);
+    console.log(vdom);
     mountDOM(vdom, parentEl);
   }
 

@@ -1,4 +1,8 @@
-import { createApp, h, hFragment } from "https://unpkg.com/fang_framework_123";
+import {
+  createApp,
+  h,
+  hFragment,
+} from "https://unpkg.com/fang_framework_123@1.0.9";
 
 const state = {
   currentTodo: "",

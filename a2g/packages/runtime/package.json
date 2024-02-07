@@ -1,15 +1,8 @@
 {
   "name": "fang_framework_123",
-  "version": "1.0.9",
-  "description": "A frontend framework to teach web developers how frontend frameworks work.",
-  "keywords": [
-    "frontend",
-    "framework",
-    "book",
-    "learning",
-    "web",
-    "development"
-  ],
+  "version": "1.0.10",
+  "description": "",
+  "keywords": [],
   "exports": "./dist/fe-fwk.js",
   "main": "dist/fe-fwk.js",
   "module": "dist/fe-fwk.js",

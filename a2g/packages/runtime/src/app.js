@@ -13,7 +13,7 @@ export function createApp({ state, view, reducers = {} }) {
     dispatcher.dispatch(eventName, payload);
   }
 
-  // (payload) => { state = reducer(state, payload)}
+
   for (const actionName in reducers) {
     const reducer = reducers[actionName];
     const subs = dispatcher.subscribe(actionName, (payload) => {

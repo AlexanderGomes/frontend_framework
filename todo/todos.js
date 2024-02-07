@@ -2,7 +2,7 @@ import {
   createApp,
   h,
   hFragment,
-} from "https://unpkg.com/fang_framework_123@1.0.9";
+} from "https://unpkg.com/fang_framework_123@1.0.10";
 
 const state = {
   currentTodo: "",
@@ -91,6 +91,7 @@ function CreateTodo({ currentTodo }, emit) {
       {
         disabled: currentTodo.length < 3,
         on: { click: () => emit("add-todo") },
+        style: { backgroundColor: "blue", color: "white"}
       },
       ["Add"]
     ),

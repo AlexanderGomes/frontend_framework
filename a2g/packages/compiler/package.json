@@ -1,15 +1,8 @@
 {
   "name": "a2g-compiler",
   "version": "1.0.0",
-  "description": "A frontend framework to teach web developers how frontend frameworks work.",
-  "keywords": [
-    "frontend",
-    "framework",
-    "book",
-    "learning",
-    "web",
-    "development"
-  ],
+  "description": ".",
+  "keywords": [],
   "main": "dist/fe-fwk.js",
   "files": [
     "dist/fe-fwk.js"

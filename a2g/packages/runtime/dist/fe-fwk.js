@@ -5,6 +5,7 @@ function addEventListener(eventName, handler, el) {
 function addEventListeners(listeners = {}, el) {
   const addedListeners = {};
   Object.entries(listeners).forEach(([eventName, handler]) => {
+    console.log(eventName, handler);
     const listener = addEventListener(eventName, handler, el);
     addedListeners[eventName] = listener;
   });

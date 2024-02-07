@@ -7,6 +7,7 @@ export function addEventListener(eventName, handler, el) {
 export function addEventListeners(listeners = {}, el) {
   const addedListeners = {};
   Object.entries(listeners).forEach(([eventName, handler]) => {
+    console.log(eventName, handler);
     const listener = addEventListener(eventName, handler, el);
     addedListeners[eventName] = listener;
   });
@@ -18,4 +19,3 @@ export function removeEventListeners(listeners = {}, el) {
     el.removeEventListener(eventName, handler);
   });
 }
-

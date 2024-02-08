@@ -7,6 +7,7 @@ import { patchDOM } from "./patch-dom";
 export function createApp({ state, view, reducers = {} }) {
   let parentEl = null;
   let vdom = null;
+  let isMounted = false;
 
   const dispatcher = new Dispatcher();
   const subscriptions = [dispatcher.afterEveryCommand(renderApp)];
@@ -36,15 +37,20 @@ export function createApp({ state, view, reducers = {} }) {
   return {
     // I don't quite understand the new flow
     mount(_parentEl) {
+      if (isMounted) {
+        throw new Error("The application is already mounted");
+      }
+
       parentEl = _parentEl;
-      renderApp();
       vdom = view(state, emit);
       mountDOM(vdom, parentEl);
+      isMounted = true;
     },
     unmount() {
       destroyDOM(vdom);
       vdom = null;
       subscriptions.forEach((unsubscribe) => unsubscribe());
+      isMounted = false;
     },
   };
 }

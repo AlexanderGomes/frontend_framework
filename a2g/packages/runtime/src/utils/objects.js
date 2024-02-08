@@ -1,3 +1,4 @@
+// comparing the props
 export function objectsDiff(oldObj, newObj) {
   const oldKeys = Object.keys(oldObj);
   const newKeys = Object.keys(newObj);

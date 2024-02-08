@@ -1,7 +1,9 @@
 import { destroyDOM } from "./destroy-dom";
 import { mountDOM } from "./mount-dom";
 import { Dispatcher } from "./dispatcher";
+import { patchDOM } from "./patch-dom";
 
+// I don't quite understand the new flow
 export function createApp({ state, view, reducers = {} }) {
   let parentEl = null;
   let vdom = null;
@@ -12,7 +14,6 @@ export function createApp({ state, view, reducers = {} }) {
   function emit(eventName, payload) {
     dispatcher.dispatch(eventName, payload);
   }
-
 
   for (const actionName in reducers) {
     const reducer = reducers[actionName];
@@ -27,15 +28,18 @@ export function createApp({ state, view, reducers = {} }) {
       destroyDOM(vdom);
     }
 
-    vdom = view(state, emit);
-    console.log(vdom);
+    const newVdom = view(state, emit);
     mountDOM(vdom, parentEl);
+    vdom = patchDOM(vdom, newVdom, parentEl);
   }
 
   return {
+    // I don't quite understand the new flow
     mount(_parentEl) {
       parentEl = _parentEl;
       renderApp();
+      vdom = view(state, emit);
+      mountDOM(vdom, parentEl);
     },
     unmount() {
       destroyDOM(vdom);

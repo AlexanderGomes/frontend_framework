@@ -14,6 +14,7 @@ import { isNotBlankOrEmptyString } from "./utils/strings";
 import { addEventListener } from "./events";
 
 export function patchDOM(oldVdom, newVdom, parentEl) {
+
   if (!areNodesEqual(oldVdom, newVdom)) {
     const index = findIndexInParent(parentEl, oldVdom.el);
     destroyDOM(oldVdom);
@@ -74,6 +75,7 @@ function patchElement(oldVdom, newVdom) {
     on: newEvents,
     ...newAttrs
   } = newVdom.props;
+  
   const { listeners: oldListeners } = oldVdom;
 
   patchAttrs(el, oldAttrs, newAttrs);

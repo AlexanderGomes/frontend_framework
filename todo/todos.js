@@ -2,7 +2,7 @@ import {
   createApp,
   h,
   hFragment,
-} from "https://unpkg.com/fang_framework_123@1.0.11";
+} from "https://unpkg.com/fang_framework_123@1.0.15";
 
 const state = {
   currentTodo: "",

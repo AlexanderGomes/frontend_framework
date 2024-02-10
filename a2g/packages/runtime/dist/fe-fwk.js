@@ -5,7 +5,6 @@ function addEventListener(eventName, handler, el) {
 function addEventListeners(listeners = {}, el) {
   const addedListeners = {};
   Object.entries(listeners).forEach(([eventName, handler]) => {
-    console.log(eventName, handler);
     const listener = addEventListener(eventName, handler, el);
     addedListeners[eventName] = listener;
   });
@@ -183,7 +182,7 @@ function hFragment(vNodes) {
 }
 function extractChildren(vdom) {
   if (vdom.children == null) {
-    return []
+    return [];
   }
   const children = [];
   for (const child of vdom.children) {
@@ -193,7 +192,8 @@ function extractChildren(vdom) {
       children.push(child);
     }
   }
-  return children
+  console.log(children);
+  return children;
 }
 
 function destroyDOM(vdom) {
@@ -556,11 +556,7 @@ function createApp({ state, view, reducers = {} }) {
     subscriptions.push(subs);
   }
   function renderApp() {
-    if (vdom) {
-      destroyDOM(vdom);
-    }
     const newVdom = view(state, emit);
-    mountDOM(vdom, parentEl);
     vdom = patchDOM(vdom, newVdom, parentEl);
   }
   return {

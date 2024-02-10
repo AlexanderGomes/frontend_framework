@@ -25,17 +25,11 @@ export function createApp({ state, view, reducers = {} }) {
   }
 
   function renderApp() {
-    if (vdom) {
-      destroyDOM(vdom);
-    }
-
     const newVdom = view(state, emit);
-    mountDOM(vdom, parentEl);
     vdom = patchDOM(vdom, newVdom, parentEl);
   }
 
   return {
-    // I don't quite understand the new flow
     mount(_parentEl) {
       if (isMounted) {
         throw new Error("The application is already mounted");

@@ -35,10 +35,20 @@ export function hFragment(vNodes) {
   };
 }
 
-export function lipsum(n) {
-  const text = `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-    enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-    ut aliquip ex ea commodo consequat.`;
-  return hFragment(Array(n).fill(h("p", {}, [text])));
+export function extractChildren(vdom) {
+  if (vdom.children == null) { 
+    return []
+  }
+
+  const children = []
+
+  for (const child of vdom.children) { 
+    if (child.type === DOM_TYPES.FRAGMENT) {
+      children.push(...extractChildren(child, children)) 
+    } else {
+      children.push(child) 
+    }
+  }
+
+  return children
 }

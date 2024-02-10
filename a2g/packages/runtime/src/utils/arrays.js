@@ -6,7 +6,7 @@ export const ARRAY_DIFF_OP = {
   NOOP: "noop",
 };
 
-//remove nulls after conditional redering result
+//remove nulls after conditional redering 
 export function withoutNulls(arr) {
   return arr.filter((item) => item != null);
 }

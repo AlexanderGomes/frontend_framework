@@ -3,7 +3,7 @@ import { mountDOM } from "./mount-dom";
 import { Dispatcher } from "./dispatcher";
 import { patchDOM } from "./patch-dom";
 
-// I don't quite understand the new flow
+
 export function createApp({ state, view, reducers = {} }) {
   let parentEl = null;
   let vdom = null;

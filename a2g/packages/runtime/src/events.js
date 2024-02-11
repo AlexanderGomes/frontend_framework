@@ -26,9 +26,3 @@ export function removeEventListeners(listeners = {}, el) {
     el.removeEventListener(eventName, handler);
   });
 }
-
-function boundHandler() {
-  hostComponent
-    ? handler.apply(hostComponent, arguments)
-    : handler(...arguments);
-}

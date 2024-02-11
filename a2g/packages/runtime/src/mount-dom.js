@@ -16,6 +16,10 @@ export function mountDOM(vdom, parentEl, index, hostComponent = null) {
       createFragmentNodes(vdom, parentEl, index, hostComponent);
       break;
     }
+    case DOM_TYPES.COMPONENT: {
+      createComponentNode(vdom, parentEl, index, hostComponent);
+      break;
+    }
     default: {
       throw new Error(`Can't mount DOM of type: ${vdom.type}`);
     }
@@ -69,4 +73,14 @@ function insert(el, parentEl, index) {
   } else {
     parentEl.insertBefore(el, children[index]);
   }
+}
+
+function createComponentNode(vdom, parentEl, index, hostComponent) {
+  const Component = vdom.tag;
+  const props = vdom.props;
+  const component = new Component(props);
+
+  component.mount(parentEl, index);
+  vdom.component = component;
+  vdom.el = component.firstElement;
 }

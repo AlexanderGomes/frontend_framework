@@ -4,16 +4,40 @@ import { mountDOM } from "./mount-dom";
 import { patchDOM } from "./patch-dom";
 import { hasOwnProperty } from "./utils/objects";
 import equal from "fast-deep-equal";
+import { Dispatcher } from "./dispatcher";
 
 export function defineComponent({ render, state, ...methods }) {
   class Component {
     #isMounted = false;
     #vdom = null;
     #hostEl = null;
+    #eventHandlers = null;
+    #parentComponent = null;
 
-    constructor(props = {}) {
+    #dispatcher = new Dispatcher();
+    #subscriptions = [];
+
+    #wireEventHandlers() {
+      this.#subscriptions = Object.entries(this.#eventHandlers).map(
+        ([eventName, handler]) => this.#wireEventHandler(eventName, handler)
+      );
+    }
+
+    #wireEventHandler(eventName, handler) {
+      return this.#dispatcher.subscribe(eventName, (payload) => {
+        if (this.#parentComponent) {
+          handler.call(this.#parentComponent, payload);
+        } else {
+          handler(payload);
+        }
+      });
+    }
+
+    constructor(props = {}, eventHandlers = {}, parentComponent = null) {
       this.props = props;
       this.state = state ? state(props) : {};
+      this.#eventHandlers = eventHandlers;
+      this.#parentComponent = parentComponent;
     }
 
     //only patch when props change
@@ -73,6 +97,7 @@ export function defineComponent({ render, state, ...methods }) {
 
       this.#vdom = this.render();
       mountDOM(this.#vdom, hostEl, index, this);
+      this.#wireEventHandlers();
 
       this.#hostEl = hostEl;
       this.#isMounted = true;
@@ -84,10 +109,12 @@ export function defineComponent({ render, state, ...methods }) {
       }
 
       destroyDOM(this.#vdom);
+      this.#subscriptions.forEach((unsubscribe) => unsubscribe());
 
       this.#vdom = null;
       this.#hostEl = null;
       this.#isMounted = false;
+      this.#subscriptions = [];
     }
 
     #patch() {
@@ -97,6 +124,10 @@ export function defineComponent({ render, state, ...methods }) {
 
       const vdom = this.render();
       this.#vdom = patchDOM(this.#vdom, vdom, this.#hostEl, this);
+    }
+
+    emit(eventName, payload) {
+      this.#dispatcher.dispatch(eventName, payload);
     }
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "fang_framework_123",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "",
   "keywords": [],
   "exports": "./dist/fe-fwk.js",

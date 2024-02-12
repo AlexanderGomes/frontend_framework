@@ -5,8 +5,15 @@ import { patchDOM } from "./patch-dom";
 import { hasOwnProperty } from "./utils/objects";
 import equal from "fast-deep-equal";
 import { Dispatcher } from "./dispatcher";
+const emptyFn = () => {};
 
-export function defineComponent({ render, state, ...methods }) {
+export function defineComponent({
+  render,
+  state,
+  onMounted = emptyFn,
+  onUnmounted = emptyFn,
+  ...methods
+}) {
   class Component {
     #isMounted = false;
     #vdom = null;
@@ -16,6 +23,21 @@ export function defineComponent({ render, state, ...methods }) {
 
     #dispatcher = new Dispatcher();
     #subscriptions = [];
+
+    constructor(props = {}, eventHandlers = {}, parentComponent = null) {
+      this.props = props;
+      this.state = state ? state(props) : {};
+      this.#eventHandlers = eventHandlers;
+      this.#parentComponent = parentComponent;
+    }
+
+    onMounted() {
+      return Promise.resolve(onMounted.call(this));
+    }
+
+    onUnmounted() {
+      return Promise.resolve(onUnmounted.call(this));
+    }
 
     #wireEventHandlers() {
       this.#subscriptions = Object.entries(this.#eventHandlers).map(
@@ -31,13 +53,6 @@ export function defineComponent({ render, state, ...methods }) {
           handler(payload);
         }
       });
-    }
-
-    constructor(props = {}, eventHandlers = {}, parentComponent = null) {
-      this.props = props;
-      this.state = state ? state(props) : {};
-      this.#eventHandlers = eventHandlers;
-      this.#parentComponent = parentComponent;
     }
 
     //only patch when props change

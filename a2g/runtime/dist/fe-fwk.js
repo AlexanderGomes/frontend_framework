@@ -246,6 +246,39 @@ function removeEventListeners(listeners = {}, el) {
   });
 }
 
+let isScheduled = false;
+const jobs = [];
+function enqueueJob(job) {
+  jobs.push(job);
+  scheduleUpdate();
+}
+function scheduleUpdate() {
+  if (isScheduled) return;
+  isScheduled = true;
+  queueMicrotask(processJobs);
+}
+function processJobs() {
+  while (jobs.length > 0) {
+    const job = jobs.shift();
+    const result = job();
+    Promise.resolve(result).then(
+      () => {
+      },
+      (error) => {
+        console.error(`[scheduler]: ${error}`);
+      }
+    );
+  }
+  isScheduled = false;
+}
+function nextTick() {
+  scheduleUpdate();
+  return flushPromises();
+}
+function flushPromises() {
+  return new Promise((resolve) => setTimeout(resolve));
+}
+
 function extractPropsAndEvents(vdom) {
     const { on: events = {}, ...props } = vdom.props;
     delete props.key;
@@ -268,6 +301,7 @@ function mountDOM(vdom, parentEl, index, hostComponent = null) {
     }
     case DOM_TYPES.COMPONENT: {
       createComponentNode(vdom, parentEl, index, hostComponent);
+      enqueueJob(() => vdom.component.onMounted());
       break;
     }
     default: {
@@ -323,7 +357,7 @@ function createComponentNode(vdom, parentEl, index, hostComponent) {
   component.mount(parentEl, index);
   vdom.component = component;
   vdom.el = component.firstElement;
-}
+}x;
 
 function destroyDOM(vdom) {
   const { type } = vdom;
@@ -342,6 +376,7 @@ function destroyDOM(vdom) {
     }
     case DOM_TYPES.COMPONENT: {
       vdom.component.unmount();
+      enqueueJob(() => vdom.component.onUnmounted());
       break;
     }
     default: {
@@ -380,7 +415,7 @@ function createApp(RootComponent, props = {}) {
   return {
     mount(_parentEl) {
       if (isMounted) {
-        throw new Error('The application is already mounted')
+        throw new Error("The application is already mounted");
       }
       parentEl = _parentEl;
       vdom = h(RootComponent, props);
@@ -389,28 +424,22 @@ function createApp(RootComponent, props = {}) {
     },
     unmount() {
       if (!isMounted) {
-        throw new Error('The application is not mounted')
+        throw new Error("The application is not mounted");
       }
       destroyDOM(vdom);
       reset();
     },
-  }
+  };
 }
 
 function areNodesEqual(nodeOne, nodeTwo) {
   if (nodeOne.type !== nodeTwo.type) {
-    return false
+    return false;
   }
   if (nodeOne.type === DOM_TYPES.ELEMENT) {
-    const {
-      tag: tagOne,
-      props: { key: keyOne },
-    } = nodeOne;
-    const {
-      tag: tagTwo,
-      props: { key: keyTwo },
-    } = nodeTwo;
-    return tagOne === tagTwo && keyOne === keyTwo
+    const { tag: tagOne } = nodeOne;
+    const { tag: tagTwo } = nodeTwo;
+    return tagOne === tagTwo;
   }
   if (nodeOne.type === DOM_TYPES.COMPONENT) {
     const {
@@ -423,7 +452,7 @@ function areNodesEqual(nodeOne, nodeTwo) {
     } = nodeTwo;
     return componentOne === componentTwo && keyOne === keyTwo
   }
-  return true
+  return true;
 }
 
 function objectsDiff(oldObj, newObj) {
@@ -685,7 +714,14 @@ class Dispatcher {
   }
 }
 
-function defineComponent({ render, state, ...methods }) {
+const emptyFn = () => {};
+function defineComponent({
+  render,
+  state,
+  onMounted = emptyFn,
+  onUnmounted = emptyFn,
+  ...methods
+}) {
   class Component {
     #isMounted = false;
     #vdom = null;
@@ -694,6 +730,18 @@ function defineComponent({ render, state, ...methods }) {
     #parentComponent = null;
     #dispatcher = new Dispatcher();
     #subscriptions = [];
+    constructor(props = {}, eventHandlers = {}, parentComponent = null) {
+      this.props = props;
+      this.state = state ? state(props) : {};
+      this.#eventHandlers = eventHandlers;
+      this.#parentComponent = parentComponent;
+    }
+    onMounted() {
+      return Promise.resolve(onMounted.call(this));
+    }
+    onUnmounted() {
+      return Promise.resolve(onUnmounted.call(this));
+    }
     #wireEventHandlers() {
       this.#subscriptions = Object.entries(this.#eventHandlers).map(
         ([eventName, handler]) => this.#wireEventHandler(eventName, handler)
@@ -707,12 +755,6 @@ function defineComponent({ render, state, ...methods }) {
           handler(payload);
         }
       });
-    }
-    constructor(props = {}, eventHandlers = {}, parentComponent = null) {
-      this.props = props;
-      this.state = state ? state(props) : {};
-      this.#eventHandlers = eventHandlers;
-      this.#parentComponent = parentComponent;
     }
     updateProps(props) {
       const newProps = { ...this.props, ...props };
@@ -795,4 +837,4 @@ function defineComponent({ render, state, ...methods }) {
   return Component;
 }
 
-export { DOM_TYPES, createApp, defineComponent, h, hFragment, hString };
+export { DOM_TYPES, createApp, defineComponent, h, hFragment, hString, nextTick };

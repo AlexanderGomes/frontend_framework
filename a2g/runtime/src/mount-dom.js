@@ -87,4 +87,4 @@ function createComponentNode(vdom, parentEl, index, hostComponent) {
   component.mount(parentEl, index);
   vdom.component = component;
   vdom.el = component.firstElement;
-}
+}x

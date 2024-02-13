@@ -10,7 +10,7 @@
 ## Getting Started
 To start using the Basic Frontend Framework in your project, follow these simple steps:
 
-1. **Installation:** You can include the framework in your project by downloading the import link.
+1. **Installation:** You can include the framework in your project by downloading it and importing the following.
 <img width="721" alt="Screenshot 2024-02-13 at 1 17 51 PM" src="https://github.com/AlexanderGomes/frontend_framework/assets/98370540/1af70df5-81d5-4df9-997c-3501643fad96">
 
 

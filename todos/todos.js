@@ -3,7 +3,8 @@ import {
   defineComponent,
   h,
   hFragment,
-} from 'https://unpkg.com/fe-fwk@4'
+} from 'https://unpkg.com/fang_framework_123@1.0.16'
+
 import { readTodos, writeTodos } from './todos-repository.js'
 
 const App = defineComponent({

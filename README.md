@@ -1,28 +1,5 @@
 # Frontend Framework
 
-## Features
-
-### DOM Abstraction
-
-I created a Virtual DOM, offering a lightweight JavaScript object that mirrors the real DOM. This abstraction simplifies DOM manipulation and updates the UI efficiently on state changes.
-
-### Dispatcher
-
-Components can emit events, and their parent components can listen to these events by utilizing the dispatcher class. This enables effective communication between different parts of the application.
-
-### Patching DOM
-
-The reconciliation and diffing algorithms are implemented from scratch to identify differences between the new and old virtual DOMs. This approach optimizes DOM updates by selectively patching elements rather than rebuilding the entire structure.
-
-### Component Factory
-
-With the component factory, each component can pass its render function to create its representation of the virtual DOM. This feature enables breaking down the application into manageable subcomponents, improving modularity and maintainability.
-
-### Scheduler
-
-The library includes a scheduler that adds the onMount function to the microtask queue. This ensures that APIs are called only after the application has been fully mounted, enhancing performance and preventing potential issues.
-
-
 ## Learnings
 
 ### Beginning: Renderer + State Manager

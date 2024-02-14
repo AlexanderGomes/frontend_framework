@@ -50,7 +50,7 @@ The library includes a scheduler that adds the onMount function to the microtask
 - Enabled communication between parent and subcomponents.
 - Implemented keys for components to aid the reconciliation algorithm.
 - Utilized the scheduler to perform asynchronous tasks only after the application is fully mounted.
-- Implemented a nextTick function for executing tasks after the microtask queue is empty, akin to a useEffect hook.
+- Implemented a nextTick function for executing tasks after the microtask queue is empty.
 
 
 ## Getting Started

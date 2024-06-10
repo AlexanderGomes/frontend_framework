@@ -3,10 +3,10 @@
 ## Table of Contents
 
 1. [Learnings](#learnings)
-   - [Beginning: Renderer + State Manager](#beginning-renderer--state-manager)
-   - [Middle-State: State Manager + Patching](#middle-state-state-manager--patching)
-   - [Before Last: Sub-components + Stateful Components](#before-last-sub-components--stateful-components)
-   - [Last: Parent Communication + Asynchronous (Scheduler) + Component Lifecycle](#last-parent-communication--asynchronous-scheduler--component-lifecycle)
+   - [Renderer + State Manager](#beginning-renderer--state-manager)
+   - [State Manager + Patching](#middle-state-state-manager--patching)
+   - [Sub-components + Stateful Components](#before-last-sub-components--stateful-components)
+   - [Communication + Asynchronous (Scheduler) + Component Lifecycle](#last-parent-communication--asynchronous-scheduler--component-lifecycle)
 2. [Getting Started](#getting-started)
    - [Installation](#installation)
    - [Usage](#usage)
